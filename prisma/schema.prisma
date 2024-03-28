@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Employee {
+  enrollment Int   @id
+  name       String
+  salary     Float
+  role       String
+
+  timeCards TimeCard[]
+
+  @@map("employees")
+}
+
+model TimeCard {
+  id         Int      @id @default(autoincrement())
+  employee   Employee @relation(fields: [employeeEnrollment], references: [enrollment])
+  employeeEnrollment Int
+  startDate       DateTime
+  endDate      DateTime
+
+  @@map("time_cards")
+}
